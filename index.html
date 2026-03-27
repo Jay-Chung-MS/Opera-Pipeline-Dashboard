@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opera Pipeline Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f5f5f5;--surface:#ffffff;--surface2:#f0f0f0;
+  --border:#e0e0e0;--text:#1a1a1a;--muted:#666;
+  --accent:#0F9ED5;--green:#2d8a4e;--red:#CC0000;--red-light:#e84545;
+  --orange:#b8860b;--purple:#7c4dbc;--blue:#156082;--brand:#C00000;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Pretendard',sans-serif;font-size:14px;}
+
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;position:sticky;top:0;z-index:100;}
+.nav-logo{font-size:15px;font-weight:700;color:var(--brand);padding:14px 20px 14px 0;border-right:1px solid var(--border);margin-right:8px;white-space:nowrap;}
+.nav-tab{padding:14px 16px;font-size:13px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--brand);border-bottom-color:var(--brand);}
+.nav-right{margin-left:auto;color:var(--muted);font-size:12px;padding:14px 0;}
+
+.page{display:none;padding:24px;max-width:1400px;margin:0 auto;}
+.page.active{display:block;}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;}
+.kpi-label{color:var(--muted);font-size:12px;margin-bottom:6px;}
+.kpi-val{font-size:26px;font-weight:700;line-height:1.1;}
+.kpi-sub{font-size:12px;margin-top:6px;color:var(--muted);}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;}
+.card-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.card-title span{color:var(--accent);font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;}
+
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{color:var(--muted);font-weight:500;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;font-size:12px;position:sticky;top:0;background:var(--surface);z-index:2;}
+td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums;}
+tr:hover td{background:#eaf4fb;}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;white-space:nowrap;}
+.b-planning{background:#f3e5f5;color:#7c4dbc;}
+.b-design{background:#e8eaf6;color:#3949ab;}
+.b-development{background:#fff3e0;color:#e65100;}
+.b-certification{background:#fff8e1;color:#f57f17;}
+.b-final_review{background:#e0f7fa;color:#00838f;}
+.b-production{background:#e3f2fd;color:#156082;}
+.b-completed{background:#e8f5e9;color:#2d8a4e;}
+
+.filter-bar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+.filter-btn{padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;color:var(--muted);background:var(--surface);border:1px solid var(--border);transition:all .15s;}
+.filter-btn:hover{color:var(--text);border-color:var(--muted);}
+.filter-btn.active{background:var(--surface2);color:var(--brand);border-color:var(--brand);}
+.filter-sep{color:var(--border);font-size:16px;margin:0 4px;}
+
+.tbl-scroll{max-height:600px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;}
+.section-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+
+/* Kanban */
+.kanban{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px;}
+.kanban-col{background:var(--surface2);border-radius:10px;padding:12px;min-height:200px;}
+.kanban-header{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+.kanban-count{background:var(--surface);border-radius:10px;padding:2px 8px;font-size:11px;}
+.kanban-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;cursor:default;transition:box-shadow .15s;}
+.kanban-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.kanban-card .kc-line{font-size:11px;color:var(--accent);font-weight:600;}
+.kanban-card .kc-name{font-size:12px;font-weight:500;margin:4px 0;line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.kanban-card .kc-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px;}
+.kanban-card .kc-progress{height:3px;background:var(--surface2);border-radius:2px;margin-top:6px;overflow:hidden;}
+.kanban-card .kc-progress-bar{height:100%;border-radius:2px;transition:width .3s;}
+
+/* Toggle */
+.toggle-wrap{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.toggle{position:relative;width:36px;height:20px;cursor:pointer;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle .slider{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--border);border-radius:10px;transition:.3s;}
+.toggle .slider:before{content:'';position:absolute;height:14px;width:14px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+.toggle input:checked+.slider{background:var(--brand);}
+.toggle input:checked+.slider:before{transform:translateX(16px);}
+.toggle-label{font-size:12px;color:var(--muted);}
+
+/* Progress bar inline */
+.prog-bar{display:flex;align-items:center;gap:8px;}
+.prog-track{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;min-width:60px;}
+.prog-fill{height:100%;border-radius:3px;}
+.prog-text{font-size:11px;color:var(--muted);min-width:32px;text-align:right;}
+
+/* Donut */
+.donut-wrap{position:relative;width:180px;height:180px;margin:0 auto;}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.donut-center .num{font-size:28px;font-weight:700;}
+.donut-center .lbl{font-size:11px;color:var(--muted);}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;justify-content:center;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
+.legend-dot{width:10px;height:10px;border-radius:50%;}
+
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:12px;}
+.bar-label{width:100px;color:var(--muted);text-align:right;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bar-track{flex:1;height:18px;background:var(--surface2);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 6px;font-size:10px;color:#fff;font-weight:600;min-width:20px;}
+.bar-val{width:30px;font-weight:600;text-align:right;}
+
+.search-box{padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:12px;width:200px;font-family:inherit;}
+.search-box:focus{outline:none;border-color:var(--brand);}
+
+@media(max-width:768px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+  .kanban{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-logo">MEDIPEEL</div>
+  <div class="nav-tab active" onclick="showPage('overview')">Overview</div>
+  <div class="nav-tab" onclick="showPage('kanban')">Kanban</div>
+  <div class="nav-tab" onclick="showPage('table')">Table</div>
+  <div class="nav-right" id="nav-updated"></div>
+</div>
+
+<div class="page active" id="page-overview">
+  <!-- KPI Cards -->
+  <div class="kpi-grid" id="kpi-grid"></div>
+
+  <div class="grid-2">
+    <!-- Phase Distribution -->
+    <div class="card">
+      <div class="card-title">Phase Distribution</div>
+      <div class="donut-wrap"><canvas id="chart-phase"></canvas>
+        <div class="donut-center"><div class="num" id="donut-total"></div><div class="lbl">Total</div></div>
+      </div>
+      <div class="legend" id="legend-phase"></div>
+    </div>
+
+    <!-- By Line -->
+    <div class="card">
+      <div class="card-title">By Product Line</div>
+      <div id="bars-line"></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- By Channel -->
+    <div class="card">
+      <div class="card-title">By Channel</div>
+      <div id="bars-channel"></div>
+    </div>
+
+    <!-- By BM -->
+    <div class="card">
+      <div class="card-title">By Developer (BM)</div>
+      <div id="bars-bm"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-kanban">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <div class="toggle-wrap">
+      <label class="toggle"><input type="checkbox" id="kanban-toggle" onchange="renderKanban()"><span class="slider"></span></label>
+      <span class="toggle-label">완료 건 포함</span>
+    </div>
+    <input class="search-box" id="kanban-search" placeholder="제품명/라인 검색..." oninput="renderKanban()">
+  </div>
+  <div class="kanban" id="kanban-board"></div>
+</div>
+
+<div class="page" id="page-table">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+    <div class="filter-bar" id="filter-bar"></div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="toggle-wrap" style="margin-bottom:0;">
+        <label class="toggle"><input type="checkbox" id="table-toggle" onchange="renderTable()"><span class="slider"></span></label>
+        <span class="toggle-label">완료 건 포함</span>
+      </div>
+      <input class="search-box" id="table-search" placeholder="검색..." oninput="renderTable()">
+    </div>
+  </div>
+  <div class="tbl-scroll" id="table-wrap"></div>
+</div>
+
+<script>
+let DATA = null;
+const PHASE_ORDER = ['planning','design','development','certification','final_review','production','completed'];
+const PHASE_LABELS = {planning:'기획중',design:'디자인',development:'개발중',certification:'인증/검수',final_review:'최종검수',production:'생산/입고',completed:'입고완료'};
+const PHASE_COLORS = {planning:'#7c4dbc',design:'#3949ab',development:'#e65100',certification:'#f57f17',final_review:'#00838f',production:'#156082',completed:'#2d8a4e'};
+
+let activeFilters = {type:'all', line:'all', channel:'all'};
+
+async function init() {
+  const res = await fetch('pipeline_data.json');
+  DATA = await res.json();
+  document.getElementById('nav-updated').textContent = 'Updated: ' + DATA.updated;
+  renderOverview();
+  renderKanban();
+  renderTable();
+  buildFilters();
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function getFiltered(includeCompleted) {
+  let items = DATA.items;
+  if (!includeCompleted) items = items.filter(i => i.phase !== 'completed');
+  if (activeFilters.type !== 'all') items = items.filter(i => i.type === activeFilters.type);
+  if (activeFilters.line !== 'all') items = items.filter(i => i.line === activeFilters.line);
+  if (activeFilters.channel !== 'all') items = items.filter(i => i.channel === activeFilters.channel);
+  return items;
+}
+
+// === OVERVIEW ===
+function renderOverview() {
+  const items = DATA.items;
+  const active = items.filter(i => i.phase !== 'completed');
+  const completed = items.filter(i => i.phase === 'completed');
+  const newProd = items.filter(i => i.type === '신제품');
+  const renewal = items.filter(i => i.type === '리뉴얼');
+  const avgProgress = active.length ? Math.round(active.reduce((s, i) => s + i.progress, 0) / active.length) : 0;
+
+  document.getElementById('kpi-grid').innerHTML = `
+    <div class="kpi"><div class="kpi-label">Total Pipeline</div><div class="kpi-val">${items.length}</div><div class="kpi-sub">전체 파이프라인</div></div>
+    <div class="kpi"><div class="kpi-label">In Progress</div><div class="kpi-val" style="color:var(--accent)">${active.length}</div><div class="kpi-sub">진행 중</div></div>
+    <div class="kpi"><div class="kpi-label">Completed</div><div class="kpi-val" style="color:var(--green)">${completed.length}</div><div class="kpi-sub">입고 완료</div></div>
+    <div class="kpi"><div class="kpi-label">New / Renewal</div><div class="kpi-val">${newProd.length} / ${renewal.length}</div><div class="kpi-sub">신제품 / 리뉴얼</div></div>
+    <div class="kpi"><div class="kpi-label">Avg. Progress</div><div class="kpi-val">${avgProgress}%</div><div class="kpi-sub">진행 중 평균 진척률</div></div>
+  `;
+
+  // Phase donut
+  const phaseCounts = {};
+  PHASE_ORDER.forEach(p => phaseCounts[p] = 0);
+  items.forEach(i => phaseCounts[i.phase] = (phaseCounts[i.phase] || 0) + 1);
+  document.getElementById('donut-total').textContent = items.length;
+
+  const ctx = document.getElementById('chart-phase').getContext('2d');
+  if (window._phaseChart) window._phaseChart.destroy();
+  window._phaseChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: PHASE_ORDER.map(p => PHASE_LABELS[p]),
+      datasets: [{
+        data: PHASE_ORDER.map(p => phaseCounts[p]),
+        backgroundColor: PHASE_ORDER.map(p => PHASE_COLORS[p]),
+        borderWidth: 0
+      }]
+    },
+    options: {
+      cutout: '65%',
+      plugins: { legend: { display: false } },
+      responsive: true,
+      maintainAspectRatio: true
+    }
+  });
+
+  const legendEl = document.getElementById('legend-phase');
+  legendEl.innerHTML = PHASE_ORDER.filter(p => phaseCounts[p] > 0).map(p =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${PHASE_COLORS[p]}"></div>${PHASE_LABELS[p]} (${phaseCounts[p]})</div>`
+  ).join('');
+
+  // Bar charts
+  renderBars('bars-line', countBy(items, 'line'), var_accent);
+  renderBars('bars-channel', countBy(items, 'channel'), '#156082');
+  renderBars('bars-bm', countBy(items, 'bm'), '#7c4dbc');
+}
+
+function var_accent(){ return '#0F9ED5'; }
+
+function countBy(items, key) {
+  const counts = {};
+  items.forEach(i => { const v = i[key] || '(미정)'; counts[v] = (counts[v] || 0) + 1; });
+  return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+}
+
+function renderBars(elId, data, color) {
+  const max = data.length ? Math.max(...data.map(d => d[1])) : 1;
+  const c = typeof color === 'function' ? color() : color;
+  document.getElementById(elId).innerHTML = data.map(([label, val]) =>
+    `<div class="bar-row">
+      <div class="bar-label" title="${label}">${label}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${val/max*100}%;background:${c}">${val}</div></div>
+    </div>`
+  ).join('');
+}
+
+// === KANBAN ===
+function renderKanban() {
+  const showCompleted = document.getElementById('kanban-toggle').checked;
+  const search = document.getElementById('kanban-search').value.toLowerCase();
+  let items = DATA.items;
+  if (!showCompleted) items = items.filter(i => i.phase !== 'completed');
+  if (search) items = items.filter(i => i.product.toLowerCase().includes(search) || i.line.toLowerCase().includes(search));
+
+  const phases = showCompleted ? PHASE_ORDER : PHASE_ORDER.filter(p => p !== 'completed');
+  const board = document.getElementById('kanban-board');
+
+  board.innerHTML = phases.map(phase => {
+    const phaseItems = items.filter(i => i.phase === phase);
+    return `<div class="kanban-col">
+      <div class="kanban-header">${PHASE_LABELS[phase]} <span class="kanban-count">${phaseItems.length}</span></div>
+      ${phaseItems.map(i => `
+        <div class="kanban-card">
+          <div class="kc-line">${i.line}</div>
+          <div class="kc-name">${i.product}</div>
+          <div class="kc-meta">
+            <span>${i.type}</span>
+            <span>${i.bm}</span>
+          </div>
+          <div class="kc-meta">
+            <span>${i.channel}</span>
+            <span>${i.launch_target}</span>
+          </div>
+          <div class="kc-progress"><div class="kc-progress-bar" style="width:${i.progress}%;background:${PHASE_COLORS[phase]}"></div></div>
+        </div>
+      `).join('')}
+    </div>`;
+  }).join('');
+}
+
+// === TABLE ===
+function buildFilters() {
+  const types = [...new Set(DATA.items.map(i => i.type))].sort();
+  const lines = [...new Set(DATA.items.map(i => i.line))].sort();
+  const channels = [...new Set(DATA.items.map(i => i.channel))].sort();
+
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+
+  const addGroup = (key, values) => {
+    const btn = (val, label) => {
+      const b = document.createElement('div');
+      b.className = 'filter-btn' + (activeFilters[key] === val ? ' active' : '');
+      b.textContent = label;
+      b.onclick = () => { activeFilters[key] = val; buildFilters(); renderTable(); };
+      bar.appendChild(b);
+    };
+    btn('all', 'All');
+    values.forEach(v => btn(v, v));
+    const sep = document.createElement('span');
+    sep.className = 'filter-sep';
+    sep.textContent = '|';
+    bar.appendChild(sep);
+  };
+
+  addGroup('type', types);
+  addGroup('line', lines);
+}
+
+function renderTable() {
+  const showCompleted = document.getElementById('table-toggle').checked;
+  const search = document.getElementById('table-search').value.toLowerCase();
+  let items = getFiltered(showCompleted);
+  if (search) items = items.filter(i =>
+    i.product.toLowerCase().includes(search) ||
+    i.line.toLowerCase().includes(search) ||
+    i.bm.toLowerCase().includes(search) ||
+    i.channel.toLowerCase().includes(search)
+  );
+
+  // Sort: in-progress first (by phase order), then completed
+  items.sort((a, b) => {
+    const ai = PHASE_ORDER.indexOf(a.phase);
+    const bi = PHASE_ORDER.indexOf(b.phase);
+    return ai - bi;
+  });
+
+  const wrap = document.getElementById('table-wrap');
+  wrap.innerHTML = `<table>
+    <thead><tr>
+      <th>No</th><th>구분</th><th>라인</th><th>제품명</th><th>채널</th>
+      <th>출시목표</th><th>담당(BM)</th><th>단계</th><th>진척률</th><th>다음 마일스톤</th><th>비고</th>
+    </tr></thead>
+    <tbody>
+    ${items.map(i => `<tr>
+      <td>${i.no}</td>
+      <td><span class="badge b-${i.type === '신제품' ? 'planning' : 'production'}">${i.type}</span></td>
+      <td style="font-weight:500">${i.line}</td>
+      <td title="${i.product}">${i.product.length > 40 ? i.product.substring(0,40)+'...' : i.product}</td>
+      <td>${i.channel}</td>
+      <td>${i.launch_target}</td>
+      <td>${i.bm}</td>
+      <td><span class="badge b-${i.phase}">${i.stage}</span></td>
+      <td>
+        <div class="prog-bar">
+          <div class="prog-track"><div class="prog-fill" style="width:${i.progress}%;background:${PHASE_COLORS[i.phase]}"></div></div>
+          <div class="prog-text">${i.progress}%</div>
+        </div>
+      </td>
+      <td style="font-size:11px;color:var(--muted)">${i.next_milestone !== '-' ? i.next_milestone : ''}</td>
+      <td style="font-size:11px;color:var(--muted);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${i.note}">${i.note}</td>
+    </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+init();
+</script>
+</body>
+</html>
