@@ -9,176 +9,270 @@
 <style>
 :root {
   --bg:#f5f5f5;--surface:#ffffff;--surface2:#f0f0f0;
-  --border:#e0e0e0;--text:#1a1a1a;--muted:#666;
+  --border:#e0e0e0;--text:#1a1a1a;--muted:#666666;
   --accent:#0F9ED5;--green:#2d8a4e;--red:#CC0000;--red-light:#e84545;
   --orange:#b8860b;--purple:#7c4dbc;--blue:#156082;--brand:#C00000;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:'Pretendard',sans-serif;font-size:14px;}
+body{background:var(--bg);color:var(--text);font-family:'Pretendard',sans-serif;font-size:15px;}
 
-.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;position:sticky;top:0;z-index:100;}
-.nav-logo{font-size:15px;font-weight:700;color:var(--brand);padding:14px 20px 14px 0;border-right:1px solid var(--border);margin-right:8px;white-space:nowrap;}
-.nav-tab{padding:14px 16px;font-size:13px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
+/* ═══ NAV ═══ */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;}
+.nav-logo{font-size:17px;font-weight:700;color:var(--brand);padding:14px 20px 14px 0;border-right:1px solid var(--border);margin-right:8px;white-space:nowrap;display:flex;align-items:center;}
+.nav-tab{padding:14px 16px;font-size:14px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
 .nav-tab:hover{color:var(--text);}
 .nav-tab.active{color:var(--brand);border-bottom-color:var(--brand);}
 .nav-right{margin-left:auto;color:var(--muted);font-size:12px;padding:14px 0;}
 
+/* ═══ LAYOUT ═══ */
 .page{display:none;padding:24px;max-width:1400px;margin:0 auto;}
 .page.active{display:block;}
 
 .kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px;}
-.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;}
-.kpi-label{color:var(--muted);font-size:12px;margin-bottom:6px;}
-.kpi-val{font-size:26px;font-weight:700;line-height:1.1;}
-.kpi-sub{font-size:12px;margin-top:6px;color:var(--muted);}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;}
+.kpi-label{color:var(--muted);font-size:13px;margin-bottom:6px;}
+.kpi-val{font-size:32px;font-weight:700;line-height:1.1;}
+.kpi-sub{font-size:13px;margin-top:6px;color:var(--muted);}
+.kpi-sub .up{color:var(--green);}
+.kpi-sub .down{color:var(--red);}
 
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;}
-.card-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;}
+.card-title{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
 .card-title span{color:var(--accent);font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;}
 
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th{color:var(--muted);font-weight:500;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;font-size:12px;position:sticky;top:0;background:var(--surface);z-index:2;}
-td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums;}
-tr:hover td{background:#eaf4fb;}
+.section-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
 
-.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;white-space:nowrap;}
-.b-planning{background:#f3e5f5;color:#7c4dbc;}
-.b-design{background:#e8eaf6;color:#3949ab;}
-.b-development{background:#fff3e0;color:#e65100;}
-.b-certification{background:#fff8e1;color:#f57f17;}
-.b-final_review{background:#e0f7fa;color:#00838f;}
+/* ═══ PACE GAUGE (from Sales Dashboard) ═══ */
+.pace-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:24px;}
+.pace-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.pace-header-title{font-size:15px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.pace-gauge{position:relative;height:40px;background:var(--border);border-radius:6px;overflow:visible;margin-bottom:12px;}
+.pace-gauge-fill{height:100%;border-radius:6px 0 0 6px;transition:width .8s ease;position:relative;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
+.pace-gauge-fill-label{color:#fff;font-size:13px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,0.3);}
+.pace-gauge-labels{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;color:var(--muted);}
+.pace-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.pace-stat{text-align:center;padding:16px 8px;background:var(--surface2);border-radius:8px;}
+.pace-stat-label{font-size:13px;color:var(--muted);margin-bottom:6px;}
+.pace-stat-val{font-size:28px;font-weight:700;line-height:1.2;}
+.pace-stat-sub{font-size:13px;color:var(--muted);margin-top:4px;}
+.pace-stat-val.danger{color:var(--red);}
+.pace-stat-val.warning{color:var(--orange);}
+.pace-stat-val.good{color:var(--green);}
+.pace-stat-val.info{color:var(--accent);}
+
+/* ═══ INFO BOX (from Inventory Dashboard) ═══ */
+.info-box{background:#fafafa;border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:20px;font-size:13px;line-height:1.8;}
+.info-box h3{font-size:14px;color:var(--brand);margin-bottom:8px;font-weight:600;}
+.info-box .hl{color:var(--text);font-weight:500;}
+
+/* ═══ TOGGLE (from Sales Dashboard) ═══ */
+.toggle{display:flex;gap:4px;background:var(--bg);border-radius:6px;padding:3px;}
+.toggle-btn{padding:4px 12px;border-radius:4px;font-size:13px;cursor:pointer;color:var(--muted);transition:all .15s;border:none;background:transparent;font-family:inherit;}
+.toggle-btn.active{background:var(--surface2);color:var(--brand);border:1px solid var(--brand);}
+
+/* ═══ TABLE ═══ */
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{color:var(--muted);font-weight:500;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;font-size:12px;position:sticky;top:0;background:var(--surface);z-index:2;}
+td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#eaf4fb;}
+.tbl-scroll{max-height:600px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;}
+
+/* ═══ BADGE ═══ */
+.badge{display:inline-block;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:600;white-space:nowrap;}
+.b-planning{background:#ffeaea;color:#CC0000;}
+.b-design{background:#fff3e0;color:#b8860b;}
+.b-development{background:#fff3e0;color:#b8860b;}
+.b-certification{background:#e3f2fd;color:#0F9ED5;}
+.b-final_review{background:#e3f2fd;color:#0F9ED5;}
 .b-production{background:#e3f2fd;color:#156082;}
 .b-completed{background:#e8f5e9;color:#2d8a4e;}
+.b-new{background:#ffeaea;color:#CC0000;}
+.b-renewal{background:#e3f2fd;color:#156082;}
 
+/* ═══ TOOLTIP (from Inventory Dashboard) ═══ */
+[data-tooltip]{position:relative;cursor:help;}
+[data-tooltip]:hover::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:8px 12px;border-radius:6px;font-size:11px;white-space:pre-line;z-index:200;max-width:320px;line-height:1.5;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.15);}
+
+/* ═══ FILTER ═══ */
 .filter-bar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
-.filter-btn{padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;color:var(--muted);background:var(--surface);border:1px solid var(--border);transition:all .15s;}
+.filter-btn{padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;color:var(--muted);background:var(--surface);border:1px solid var(--border);transition:all .15s;font-family:inherit;}
 .filter-btn:hover{color:var(--text);border-color:var(--muted);}
 .filter-btn.active{background:var(--surface2);color:var(--brand);border-color:var(--brand);}
 .filter-sep{color:var(--border);font-size:16px;margin:0 4px;}
 
-.tbl-scroll{max-height:600px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;}
-.section-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.search-box{padding:7px 14px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:13px;width:240px;outline:none;font-family:inherit;}
+.search-box:focus{border-color:var(--accent);}
+.search-box::placeholder{color:#aaa;}
 
-/* Kanban */
-.kanban{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px;}
+/* ═══ KANBAN ═══ */
+.kanban{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:24px;}
 .kanban-col{background:var(--surface2);border-radius:10px;padding:12px;min-height:200px;}
-.kanban-header{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+.kanban-header{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
 .kanban-count{background:var(--surface);border-radius:10px;padding:2px 8px;font-size:11px;}
-.kanban-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;cursor:default;transition:box-shadow .15s;}
-.kanban-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.kanban-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;cursor:pointer;transition:all .15s;}
+.kanban-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.1);border-color:var(--accent);}
 .kanban-card .kc-line{font-size:11px;color:var(--accent);font-weight:600;}
-.kanban-card .kc-name{font-size:12px;font-weight:500;margin:4px 0;line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-.kanban-card .kc-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px;}
-.kanban-card .kc-progress{height:3px;background:var(--surface2);border-radius:2px;margin-top:6px;overflow:hidden;}
+.kanban-card .kc-name{font-size:13px;font-weight:500;margin:4px 0;line-height:1.4;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.kanban-card .kc-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px;}
+.kanban-card .kc-progress{height:4px;background:var(--surface2);border-radius:2px;margin-top:8px;overflow:hidden;}
 .kanban-card .kc-progress-bar{height:100%;border-radius:2px;transition:width .3s;}
 
-/* Toggle */
-.toggle-wrap{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
-.toggle{position:relative;width:36px;height:20px;cursor:pointer;}
-.toggle input{opacity:0;width:0;height:0;}
-.toggle .slider{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--border);border-radius:10px;transition:.3s;}
-.toggle .slider:before{content:'';position:absolute;height:14px;width:14px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
-.toggle input:checked+.slider{background:var(--brand);}
-.toggle input:checked+.slider:before{transform:translateX(16px);}
-.toggle-label{font-size:12px;color:var(--muted);}
-
-/* Progress bar inline */
+/* ═══ PROGRESS BAR ═══ */
 .prog-bar{display:flex;align-items:center;gap:8px;}
 .prog-track{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;min-width:60px;}
 .prog-fill{height:100%;border-radius:3px;}
-.prog-text{font-size:11px;color:var(--muted);min-width:32px;text-align:right;}
+.prog-text{font-size:12px;color:var(--muted);min-width:36px;text-align:right;font-weight:500;}
 
-/* Donut */
-.donut-wrap{position:relative;width:180px;height:180px;margin:0 auto;}
+/* ═══ BAR CHART ═══ */
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:13px;}
+.bar-label{width:110px;color:var(--muted);text-align:right;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bar-track{flex:1;height:22px;background:var(--surface2);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:11px;color:#fff;font-weight:600;min-width:24px;}
+
+/* ═══ DONUT ═══ */
+.donut-wrap{position:relative;width:200px;height:200px;margin:0 auto;}
 .donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
-.donut-center .num{font-size:28px;font-weight:700;}
-.donut-center .lbl{font-size:11px;color:var(--muted);}
+.donut-center .num{font-size:32px;font-weight:700;}
+.donut-center .lbl{font-size:12px;color:var(--muted);}
 .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;justify-content:center;}
 .legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
 .legend-dot{width:10px;height:10px;border-radius:50%;}
 
-.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:12px;}
-.bar-label{width:100px;color:var(--muted);text-align:right;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.bar-track{flex:1;height:18px;background:var(--surface2);border-radius:4px;overflow:hidden;}
-.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 6px;font-size:10px;color:#fff;font-weight:600;min-width:20px;}
-.bar-val{width:30px;font-weight:600;text-align:right;}
+/* ═══ TIMELINE ═══ */
+.tl-row{display:flex;align-items:center;margin-bottom:4px;font-size:12px;}
+.tl-label{width:200px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px;}
+.tl-track{flex:1;height:24px;position:relative;border-left:1px solid var(--border);}
+.tl-bar{position:absolute;height:20px;top:2px;border-radius:4px;display:flex;align-items:center;padding:0 6px;font-size:10px;color:#fff;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;transition:opacity .15s;}
+.tl-bar:hover{opacity:.85;}
+.tl-month-header{display:flex;font-size:11px;color:var(--muted);margin-bottom:8px;}
+.tl-month-header .tl-label{font-weight:600;}
+.tl-month-header .tl-track{display:flex;}
+.tl-month-cell{flex:1;text-align:center;border-left:1px solid var(--border);padding:2px 0;}
 
-.search-box{padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:12px;width:200px;font-family:inherit;}
-.search-box:focus{outline:none;border-color:var(--brand);}
+/* ═══ MODAL ═══ */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:300;justify-content:center;align-items:center;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--surface);border-radius:12px;padding:32px;max-width:560px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.2);}
+.modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:4px 8px;}
+.modal-close:hover{color:var(--text);}
+.modal h2{font-size:18px;font-weight:700;margin-bottom:4px;}
+.modal .modal-line{font-size:13px;color:var(--accent);font-weight:600;margin-bottom:16px;}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.modal-field{background:var(--surface2);border-radius:8px;padding:12px;}
+.modal-field-label{font-size:11px;color:var(--muted);margin-bottom:4px;}
+.modal-field-val{font-size:14px;font-weight:500;}
+.modal-steps{margin-top:16px;}
+.modal-steps h3{font-size:13px;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;}
+.step-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:13px;}
+.step-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.step-dot.done{background:var(--green);}
+.step-dot.pending{background:var(--border);}
+.step-name{color:var(--muted);}
+.step-name.done{color:var(--text);font-weight:500;}
+.step-name.current{color:var(--orange);font-weight:600;}
 
-@media(max-width:768px){
+@media(max-width:900px){
   .kpi-grid{grid-template-columns:repeat(2,1fr);}
   .grid-2,.grid-3{grid-template-columns:1fr;}
   .kanban{grid-template-columns:1fr 1fr;}
+  .pace-stats{grid-template-columns:repeat(2,1fr);}
+  .modal-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
-<div class="nav">
-  <div class="nav-logo">MEDIPEEL</div>
-  <div class="nav-tab active" onclick="showPage('overview')">Overview</div>
-  <div class="nav-tab" onclick="showPage('kanban')">Kanban</div>
-  <div class="nav-tab" onclick="showPage('table')">Table</div>
+<nav class="nav">
+  <div class="nav-logo"><img src="https://www.medipeel.co.kr/web/upload/logo_img/blit_f_logo_20240710092854.png" alt="Medipeel" style="height:22px;vertical-align:middle;margin-right:6px" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=color:var(--brand);font-weight:700>MEDIPEEL</span> Pipeline'"> Pipeline</div>
+  <div class="nav-tab active" onclick="showPage('overview',this)">전사 Summary</div>
+  <div class="nav-tab" onclick="showPage('kanban',this)">개발 현황</div>
+  <div class="nav-tab" onclick="showPage('timeline',this)">런칭 일정</div>
+  <div class="nav-tab" onclick="showPage('table',this)">상세 데이터</div>
   <div class="nav-right" id="nav-updated"></div>
-</div>
+</nav>
 
+<!-- ═══ OVERVIEW ═══ -->
 <div class="page active" id="page-overview">
-  <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-grid"></div>
+  <div id="pace-section"></div>
 
   <div class="grid-2">
-    <!-- Phase Distribution -->
     <div class="card">
-      <div class="card-title">Phase Distribution</div>
+      <div class="card-title">단계별 분포 <span>Phase Distribution</span></div>
       <div class="donut-wrap"><canvas id="chart-phase"></canvas>
         <div class="donut-center"><div class="num" id="donut-total"></div><div class="lbl">Total</div></div>
       </div>
       <div class="legend" id="legend-phase"></div>
     </div>
-
-    <!-- By Line -->
     <div class="card">
-      <div class="card-title">By Product Line</div>
+      <div class="card-title">By Product Line <span>프랜차이즈별</span></div>
       <div id="bars-line"></div>
     </div>
   </div>
-
   <div class="grid-2">
-    <!-- By Channel -->
     <div class="card">
-      <div class="card-title">By Channel</div>
+      <div class="card-title">By Channel <span>채널별</span></div>
       <div id="bars-channel"></div>
     </div>
-
-    <!-- By BM -->
     <div class="card">
-      <div class="card-title">By Developer (BM)</div>
+      <div class="card-title">By Developer <span>담당자별</span></div>
       <div id="bars-bm"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">구분별 분포 <span>신제품 / 리뉴얼</span></div>
+    <div style="display:flex;gap:32px;align-items:center;">
+      <div style="width:160px;height:160px;position:relative;"><canvas id="chart-type"></canvas>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;"><div style="font-size:24px;font-weight:700;" id="type-total"></div><div style="font-size:11px;color:var(--muted);">Total</div></div>
+      </div>
+      <div class="legend" id="legend-type" style="flex-direction:column;align-items:flex-start;"></div>
     </div>
   </div>
 </div>
 
+<!-- ═══ KANBAN ═══ -->
 <div class="page" id="page-kanban">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-    <div class="toggle-wrap">
-      <label class="toggle"><input type="checkbox" id="kanban-toggle" onchange="renderKanban()"><span class="slider"></span></label>
-      <span class="toggle-label">완료 건 포함</span>
+  <div class="info-box">
+    <h3>개발 현황</h3>
+    신제품/리뉴얼 개발 단계별 현황입니다. 카드를 클릭하면 상세 정보를 확인할 수 있습니다.
+    <span class="hl">기획중 → 디자인 → 개발중 → 인증/검수 → 최종검수 → 생산/입고 → 입고완료</span>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+    <div class="toggle">
+      <button class="toggle-btn" onclick="setKanbanMode('active',this)">진행 중</button>
+      <button class="toggle-btn active" onclick="setKanbanMode('all',this)">전체</button>
     </div>
-    <input class="search-box" id="kanban-search" placeholder="제품명/라인 검색..." oninput="renderKanban()">
+    <input class="search-box" id="kanban-search" placeholder="제품명, 라인, 담당자 검색..." oninput="renderKanban()">
   </div>
   <div class="kanban" id="kanban-board"></div>
 </div>
 
+<!-- ═══ TIMELINE ═══ -->
+<div class="page" id="page-timeline">
+  <div class="info-box">
+    <h3>런칭 일정</h3>
+    출시 목표 기준 월별 로드맵입니다. 바의 색상은 현재 개발 단계를 나타냅니다.
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+    <div class="toggle">
+      <button class="toggle-btn" onclick="setTlMode('active',this)">진행 중</button>
+      <button class="toggle-btn active" onclick="setTlMode('all',this)">전체</button>
+    </div>
+  </div>
+  <div class="card" id="timeline-card"></div>
+</div>
+
+<!-- ═══ TABLE ═══ -->
 <div class="page" id="page-table">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
     <div class="filter-bar" id="filter-bar"></div>
     <div style="display:flex;align-items:center;gap:12px;">
-      <div class="toggle-wrap" style="margin-bottom:0;">
-        <label class="toggle"><input type="checkbox" id="table-toggle" onchange="renderTable()"><span class="slider"></span></label>
-        <span class="toggle-label">완료 건 포함</span>
+      <div class="toggle">
+        <button class="toggle-btn" onclick="setTableMode('active',this)">진행 중</button>
+        <button class="toggle-btn active" onclick="setTableMode('all',this)">전체</button>
       </div>
       <input class="search-box" id="table-search" placeholder="검색..." oninput="renderTable()">
     </div>
@@ -186,56 +280,89 @@ tr:hover td{background:#eaf4fb;}
   <div class="tbl-scroll" id="table-wrap"></div>
 </div>
 
+<!-- ═══ MODAL ═══ -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content"></div>
+</div>
+
 <script>
 let DATA = null;
+const INLINE_DATA = {"updated":"2026-03-27 20:29","total_items":24,"items":[{"no":1,"type":"신제품","launch_target":"11월","channel":"심플리맨디","line":"멜라논엑스","sku_count":"1","product":"MDP X SIMPLY MANDY'S 멜라논 엑스 듀오 세트","manufacturer":"","bm":"김현주","designer":"정현담","functionality":"크림: 미백 기능성, 앰플: 미백, 주름개선 2중 기능성","price":"","phase":"completed","stage":"입고완료","progress":100,"completed_steps":20,"total_steps":20,"next_milestone":"-","note":"상페, 뷰티컷 11/18 이전 전달 예정"},{"no":2,"type":"신제품","launch_target":"11월","channel":"해외,전사","line":"랩핑 기획","sku_count":"1","product":"인 마이 포켓 랩핑 마스크 세트 4ml*10매","manufacturer":"","bm":"황승연","designer":"한지유","functionality":"비타민, 펩타이드  (미백,주름)","price":"16000","phase":"completed","stage":"입고완료","progress":95,"completed_steps":19,"total_steps":20,"next_milestone":"tech doc","note":""},{"no":3,"type":"신제품","launch_target":"12월","channel":"해외,전사","line":"글로우 인 더 다크","sku_count":"1","product":"글로우 인 더 다크 페이스 앤 넥 플럼핑 랩핑 마스크","manufacturer":"","bm":"황승연","designer":"한지유","functionality":"미백,주름","price":"","phase":"certification","stage":"인증/검수","progress":40,"completed_steps":8,"total_steps":20,"next_milestone":"sample","note":""},{"no":4,"type":"신제품","launch_target":"12월","channel":"해외, 전사","line":"알고 톡스","sku_count":"1","product":"알고톡스 플루오르 프리 딥 클렌저","manufacturer":"","bm":"김현주","designer":"정현담","functionality":"해당없음","price":"","phase":"design","stage":"디자인","progress":15,"completed_steps":3,"total_steps":20,"next_milestone":"doc link","note":""},{"no":5,"type":"리뉴얼","launch_target":"12월","channel":"전사","line":"엑스트라슈퍼9","sku_count":"1","product":"피지 클린 스크래퍼(리뉴얼)","manufacturer":"","bm":"황지수","designer":"정현담","functionality":"해당없음","price":"","phase":"completed","stage":"입고완료","progress":60,"completed_steps":12,"total_steps":20,"next_milestone":"pkg spec req","note":"12월 초 상세페이지 미팅"},{"no":6,"type":"신제품","launch_target":"11월","channel":"해외,전사","line":"엑소좀 피디알엔","sku_count":"6","product":"피토 엑소좀 피디알엔 리프팅 샷 미스트 120ml","manufacturer":"","bm":"조화소미","designer":"이지연","functionality":"미백,주름","price":"","phase":"completed","stage":"입고완료","progress":95,"completed_steps":19,"total_steps":20,"next_milestone":"inspection","note":""},{"no":7,"type":"신제품","launch_target":"11월","channel":"해외,전사","line":"엑소좀 피디알엔","sku_count":"1","product":"피토 엑소좀 피디알엔 리프팅 샷 크림 50g","manufacturer":"enc","bm":"조화소미","designer":"이지연","functionality":"미백,주름","price":"","phase":"completed","stage":"입고완료","progress":95,"completed_steps":19,"total_steps":20,"next_milestone":"inspection","note":""},{"no":8,"type":"신제품","launch_target":"11월","channel":"해외,전사","line":"엑소좀 피디알엔","sku_count":"1","product":"피토 엑소좀 피디알엔 리프팅 샷 세럼 50ml","manufacturer":"enc","bm":"조화소미","designer":"이지연","functionality":"미백,주름","price":"","phase":"completed","stage":"입고완료","progress":85,"completed_steps":17,"total_steps":20,"next_milestone":"pkg spec","note":""},{"no":9,"type":"리뉴얼","launch_target":"12월","channel":"해외,전사","line":"엑소좀 피디알엔","sku_count":"1","product":"피토 엑소좀 피디알엔 리프팅 샷 앰플 100ml (신델라 앰플 리뉴얼)","manufacturer":"","bm":"조화소미","designer":"이지연","functionality":"미백,주름","price":"","phase":"completed","stage":"입고완료","progress":65,"completed_steps":13,"total_steps":20,"next_milestone":"pkg spec req","note":""},{"no":10,"type":"신제품","launch_target":"25년","channel":"해외,전사","line":"엑소좀 피디알엔","sku_count":"1","product":"피토 엑소좀 피디알엔 리프팅 샷 토너 150ml","manufacturer":"enc","bm":"조화소미","designer":"이지연","functionality":"미백,주름","price":"","phase":"completed","stage":"입고완료","progress":65,"completed_steps":13,"total_steps":20,"next_milestone":"pkg spec req","note":""},{"no":11,"type":"신제품","launch_target":"25년","channel":"해외,전사","line":"엑소좀 피디알엔","sku_count":"1","product":"피토 엑소좀 피디알엔 리프팅 샷 아이 크림 40ml","manufacturer":"enc","bm":"조화소미","designer":"이지연","functionality":"미백,주름","price":"","phase":"completed","stage":"입고완료","progress":65,"completed_steps":13,"total_steps":20,"next_milestone":"pkg spec req","note":""},{"no":12,"type":"리뉴얼","launch_target":"12월 목표","channel":"다이소","line":"패드","sku_count":"4","product":"다이소 패드 4종 50매(리뉴얼)","manufacturer":"","bm":"최현주","designer":"한지유","functionality":"비기능성","price":"","phase":"design","stage":"디자인","progress":25,"completed_steps":5,"total_steps":20,"next_milestone":"container","note":""},{"no":13,"type":"신제품","launch_target":"25년 1월","channel":"무신사","line":"글로우 인 더 다크","sku_count":"1","product":"글로우 인 더 다크 플럼핑 마스크(네온)","manufacturer":"","bm":"최현주","designer":"정현담","functionality":"미백,주름","price":"","phase":"certification","stage":"인증/검수","progress":45,"completed_steps":9,"total_steps":20,"next_milestone":"sample","note":""},{"no":14,"type":"신제품","launch_target":"25년 1월","channel":"무신사","line":"글로우 인 더 다크","sku_count":"1","product":"글로우 인 더 다크 플럼핑 마스크(보라)","manufacturer":"","bm":"최현주","designer":"정현담","functionality":"미백,주름","price":"","phase":"development","stage":"개발중","progress":35,"completed_steps":7,"total_steps":20,"next_milestone":"doc link","note":""},{"no":15,"type":"신제품","launch_target":"25년 1월","channel":"일본","line":"어린시카","sku_count":"1","product":"어린 시카 립 & 아이패치","manufacturer":"","bm":"최현주","designer":"한지유","functionality":"미백,주름","price":"","phase":"design","stage":"디자인","progress":30,"completed_steps":6,"total_steps":20,"next_milestone":"design confirm","note":""},{"no":16,"type":"신제품","launch_target":"25년 1월","channel":"해외","line":"펩타이드 9","sku_count":"1","product":"메디필 펩타이드 9 볼륨 바이오 톡스 그라인딩 립 앤 페이스 앰플 밤","manufacturer":"","bm":"김현주","designer":"정현담","functionality":"해당없음","price":"45000","phase":"completed","stage":"입고완료","progress":85,"completed_steps":17,"total_steps":20,"next_milestone":"pkg spec","note":"12월 초 상세페이지 미팅"},{"no":17,"type":"신제품","launch_target":"25년 1월","channel":"해외","line":"펩타이드 9","sku_count":"1","product":"메디필 펩타이드 9 볼륨 바이오 톡스 그라인딩 클렌징 밤","manufacturer":"","bm":"김현주","designer":"김도연","functionality":"해당없음","price":"35000","phase":"completed","stage":"입고완료","progress":85,"completed_steps":17,"total_steps":20,"next_milestone":"pkg spec","note":"12월 초 상세페이지 미팅"},{"no":18,"type":"리뉴얼","launch_target":"25년 1월","channel":"전사","line":"레드 락토 콜라겐","sku_count":"1","product":"레드 락토 콜라겐 랩핑 마스크 (리뉴얼)","manufacturer":"","bm":"황승연","designer":"한지유","functionality":"해당없음","price":"","phase":"certification","stage":"인증/검수","progress":25,"completed_steps":5,"total_steps":20,"next_milestone":"formulation","note":""},{"no":19,"type":"신제품","launch_target":"25년 1월","channel":"전사","line":"랩핑 기획","sku_count":"1","product":"인 마이 포켓 랩핑 마스크 세트 4ml*5매","manufacturer":"","bm":"황승연","designer":"한지유","functionality":"비타민, 펩타이드  (미백,주름)","price":"8000","phase":"completed","stage":"입고완료","progress":55,"completed_steps":11,"total_steps":20,"next_milestone":"pkg spec req","note":""},{"no":20,"type":"리뉴얼","launch_target":"25년 2월","channel":"전사","line":"어린 시카","sku_count":"3","product":"어린 시카 PDRN 트러블 진정 기초 3종(토너, 앰플, 크림)","manufacturer":"메가코스","bm":"김소원","designer":"한지유","functionality":"미백, 주름","price":"","phase":"completed","stage":"입고완료","progress":70,"completed_steps":14,"total_steps":20,"next_milestone":"design 1st","note":""},{"no":23,"type":"신제품","launch_target":"25년 1월","channel":"일본","line":"어린시카","sku_count":"3","product":"어린시카 EXO-PIN 세럼 3종","manufacturer":"","bm":"황지수","designer":"한지유","functionality":"미백,주름","price":"","phase":"completed","stage":"입고완료","progress":80,"completed_steps":16,"total_steps":20,"next_milestone":"sample","note":"12월 중순 상세페이지 미팅 예정"},{"no":24,"type":"신제품","launch_target":"25년 2월","channel":"미국","line":"펩타이드","sku_count":"3","product":"엠디피 펩타이드 하이브리드 잼 프라이머 15ml  2종 (홀로그램,아쿠아)","manufacturer":"","bm":"조화소미","designer":"김동민","functionality":"해당없음","price":"","phase":"completed","stage":"입고완료","progress":25,"completed_steps":5,"total_steps":20,"next_milestone":"container","note":""},{"no":25,"type":"리뉴얼","launch_target":"25년 2월","channel":"올리브영","line":"엑스트라","sku_count":"1","product":"엑스트라 슈퍼 9 플러스 3.0","manufacturer":"","bm":"황승연","designer":"정현담","functionality":"해당없음","price":"","phase":"completed","stage":"입고완료","progress":25,"completed_steps":5,"total_steps":20,"next_milestone":"doc link","note":""},{"no":25,"type":"신제품","launch_target":"25년 3월","channel":"미국","line":"펩타이드 9","sku_count":"1","product":"엠디피 펩타이드 9 바이오 선스틱 프로","manufacturer":"","bm":"최현주","designer":"정현담","functionality":"3중 기능성","price":"","phase":"completed","stage":"입고완료","progress":85,"completed_steps":17,"total_steps":20,"next_milestone":"data out","note":""}]};
+
 const PHASE_ORDER = ['planning','design','development','certification','final_review','production','completed'];
 const PHASE_LABELS = {planning:'기획중',design:'디자인',development:'개발중',certification:'인증/검수',final_review:'최종검수',production:'생산/입고',completed:'입고완료'};
-const PHASE_COLORS = {planning:'#7c4dbc',design:'#3949ab',development:'#e65100',certification:'#f57f17',final_review:'#00838f',production:'#156082',completed:'#2d8a4e'};
+const PHASE_COLORS = {planning:'#CC0000',design:'#b8860b',development:'#b8860b',certification:'#0F9ED5',final_review:'#0F9ED5',production:'#156082',completed:'#2d8a4e'};
+const STEP_NAMES = {formulation:'제형 확정',design_share:'기획/디자인 공유',doc_link:'문안 연결',container:'용기 확정',design_1st:'디자인 1차',design_confirm:'디자인 확정',container_finish:'용기 후가공',sample:'샘플 전달',pkg_spec_req:'포장규격서 신청',concept_confirm:'컨셉/전성분 확정',ct_done:'CT 완료',pkg_spec:'포장규격서',container_review:'용기 문안검수',box_review:'단상자 문안검수',data_out:'데이터 아웃',purchase_req:'구매 의뢰',inspection:'감리',tech_doc:'상품기술서',material_in:'자재 입고',product_in:'완품 입고'};
+const STEP_ORDER = ['formulation','design_share','doc_link','container','design_1st','design_confirm','container_finish','sample','pkg_spec_req','concept_confirm','ct_done','pkg_spec','container_review','box_review','data_out','purchase_req','inspection','tech_doc','material_in','product_in'];
 
-let activeFilters = {type:'all', line:'all', channel:'all'};
+let activeFilters = {type:'all',line:'all',channel:'all'};
+let kanbanMode = 'all', tlMode = 'all', tableMode = 'all';
 
 async function init() {
-  const res = await fetch('pipeline_data.json');
-  DATA = await res.json();
+  try { const res = await fetch('pipeline_data.json'); DATA = await res.json(); } catch(e) { DATA = INLINE_DATA; }
   document.getElementById('nav-updated').textContent = 'Updated: ' + DATA.updated;
   renderOverview();
   renderKanban();
+  renderTimeline();
   renderTable();
   buildFilters();
 }
 
-function showPage(name) {
+function showPage(name, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
-  event.target.classList.add('active');
+  el.classList.add('active');
 }
 
-function getFiltered(includeCompleted) {
+function getFiltered(mode) {
   let items = DATA.items;
-  if (!includeCompleted) items = items.filter(i => i.phase !== 'completed');
+  if (mode === 'active') items = items.filter(i => i.phase !== 'completed');
   if (activeFilters.type !== 'all') items = items.filter(i => i.type === activeFilters.type);
   if (activeFilters.line !== 'all') items = items.filter(i => i.line === activeFilters.line);
   if (activeFilters.channel !== 'all') items = items.filter(i => i.channel === activeFilters.channel);
   return items;
 }
 
-// === OVERVIEW ===
+function countBy(items, key) {
+  const c = {};
+  items.forEach(i => { const v = i[key] || '(미정)'; c[v] = (c[v] || 0) + 1; });
+  return Object.entries(c).sort((a, b) => b[1] - a[1]);
+}
+
+// ═══ OVERVIEW ═══
 function renderOverview() {
   const items = DATA.items;
   const active = items.filter(i => i.phase !== 'completed');
   const completed = items.filter(i => i.phase === 'completed');
-  const newProd = items.filter(i => i.type === '신제품');
-  const renewal = items.filter(i => i.type === '리뉴얼');
-  const avgProgress = active.length ? Math.round(active.reduce((s, i) => s + i.progress, 0) / active.length) : 0;
+  const newP = items.filter(i => i.type === '신제품').length;
+  const renP = items.filter(i => i.type === '리뉴얼').length;
+  const avgProg = active.length ? Math.round(active.reduce((s, i) => s + i.progress, 0) / active.length) : 0;
+  const lines = new Set(items.map(i => i.line)).size;
 
   document.getElementById('kpi-grid').innerHTML = `
     <div class="kpi"><div class="kpi-label">Total Pipeline</div><div class="kpi-val">${items.length}</div><div class="kpi-sub">전체 파이프라인</div></div>
-    <div class="kpi"><div class="kpi-label">In Progress</div><div class="kpi-val" style="color:var(--accent)">${active.length}</div><div class="kpi-sub">진행 중</div></div>
+    <div class="kpi"><div class="kpi-label">In Progress</div><div class="kpi-val" style="color:var(--accent)">${active.length}</div><div class="kpi-sub">${PHASE_ORDER.filter(p=>p!=='completed').map(p=>{const c=items.filter(i=>i.phase===p).length;return c?PHASE_LABELS[p]+' '+c:''}).filter(Boolean).join(', ')}</div></div>
     <div class="kpi"><div class="kpi-label">Completed</div><div class="kpi-val" style="color:var(--green)">${completed.length}</div><div class="kpi-sub">입고 완료</div></div>
-    <div class="kpi"><div class="kpi-label">New / Renewal</div><div class="kpi-val">${newProd.length} / ${renewal.length}</div><div class="kpi-sub">신제품 / 리뉴얼</div></div>
-    <div class="kpi"><div class="kpi-label">Avg. Progress</div><div class="kpi-val">${avgProgress}%</div><div class="kpi-sub">진행 중 평균 진척률</div></div>
+    <div class="kpi"><div class="kpi-label">New / Renewal</div><div class="kpi-val">${newP}<span style="font-size:18px;color:var(--muted);font-weight:400"> / </span>${renP}</div><div class="kpi-sub">신제품 / 리뉴얼</div></div>
+    <div class="kpi"><div class="kpi-label">Product Lines</div><div class="kpi-val">${lines}</div><div class="kpi-sub">프랜차이즈 수</div></div>
   `;
+
+  // Pace gauge
+  const pct = items.length ? Math.round(completed.length / items.length * 100) : 0;
+  const clr = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--orange)' : 'var(--red)';
+  document.getElementById('pace-section').innerHTML = `
+    <div class="pace-card">
+      <div class="pace-header"><div class="pace-header-title">Pipeline Completion</div></div>
+      <div class="pace-gauge-labels"><span>0%</span><span>진행 중 ${active.length}건</span><span>100%</span></div>
+      <div class="pace-gauge"><div class="pace-gauge-fill" style="width:${pct}%;background:${clr}"><span class="pace-gauge-fill-label">${pct}%</span></div></div>
+      <div class="pace-stats">
+        <div class="pace-stat"><div class="pace-stat-label">전체</div><div class="pace-stat-val info">${items.length}</div></div>
+        <div class="pace-stat"><div class="pace-stat-label">완료</div><div class="pace-stat-val good">${completed.length}</div></div>
+        <div class="pace-stat"><div class="pace-stat-label">진행 중</div><div class="pace-stat-val warning">${active.length}</div></div>
+        <div class="pace-stat"><div class="pace-stat-label">평균 진척률</div><div class="pace-stat-val ${avgProg>=70?'good':avgProg>=40?'warning':'danger'}">${avgProg}%</div></div>
+      </div>
+    </div>`;
 
   // Phase donut
   const phaseCounts = {};
@@ -246,162 +373,159 @@ function renderOverview() {
   const ctx = document.getElementById('chart-phase').getContext('2d');
   if (window._phaseChart) window._phaseChart.destroy();
   window._phaseChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: PHASE_ORDER.map(p => PHASE_LABELS[p]),
-      datasets: [{
-        data: PHASE_ORDER.map(p => phaseCounts[p]),
-        backgroundColor: PHASE_ORDER.map(p => PHASE_COLORS[p]),
-        borderWidth: 0
-      }]
-    },
-    options: {
-      cutout: '65%',
-      plugins: { legend: { display: false } },
-      responsive: true,
-      maintainAspectRatio: true
-    }
+    type:'doughnut',
+    data:{labels:PHASE_ORDER.map(p=>PHASE_LABELS[p]),datasets:[{data:PHASE_ORDER.map(p=>phaseCounts[p]),backgroundColor:PHASE_ORDER.map(p=>PHASE_COLORS[p]),borderWidth:0}]},
+    options:{cutout:'65%',plugins:{legend:{display:false}},responsive:true,maintainAspectRatio:true}
   });
+  document.getElementById('legend-phase').innerHTML = PHASE_ORDER.filter(p=>phaseCounts[p]>0).map(p=>`<div class="legend-item"><div class="legend-dot" style="background:${PHASE_COLORS[p]}"></div>${PHASE_LABELS[p]} (${phaseCounts[p]})</div>`).join('');
 
-  const legendEl = document.getElementById('legend-phase');
-  legendEl.innerHTML = PHASE_ORDER.filter(p => phaseCounts[p] > 0).map(p =>
-    `<div class="legend-item"><div class="legend-dot" style="background:${PHASE_COLORS[p]}"></div>${PHASE_LABELS[p]} (${phaseCounts[p]})</div>`
-  ).join('');
+  // Type donut
+  document.getElementById('type-total').textContent = items.length;
+  const ctx2 = document.getElementById('chart-type').getContext('2d');
+  if (window._typeChart) window._typeChart.destroy();
+  window._typeChart = new Chart(ctx2, {
+    type:'doughnut',
+    data:{labels:['신제품','리뉴얼'],datasets:[{data:[newP,renP],backgroundColor:['#CC0000','#0F9ED5'],borderWidth:0}]},
+    options:{cutout:'60%',plugins:{legend:{display:false}},responsive:true,maintainAspectRatio:true}
+  });
+  document.getElementById('legend-type').innerHTML = `<div class="legend-item"><div class="legend-dot" style="background:#CC0000"></div>신제품 ${newP}건 (${Math.round(newP/items.length*100)}%)</div><div class="legend-item"><div class="legend-dot" style="background:#0F9ED5"></div>리뉴얼 ${renP}건 (${Math.round(renP/items.length*100)}%)</div>`;
 
-  // Bar charts
-  renderBars('bars-line', countBy(items, 'line'), var_accent);
-  renderBars('bars-channel', countBy(items, 'channel'), '#156082');
-  renderBars('bars-bm', countBy(items, 'bm'), '#7c4dbc');
-}
-
-function var_accent(){ return '#0F9ED5'; }
-
-function countBy(items, key) {
-  const counts = {};
-  items.forEach(i => { const v = i[key] || '(미정)'; counts[v] = (counts[v] || 0) + 1; });
-  return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  renderBars('bars-line', countBy(items,'line'), '#CC0000');
+  renderBars('bars-channel', countBy(items,'channel'), '#0F9ED5');
+  renderBars('bars-bm', countBy(items,'bm'), '#156082');
 }
 
 function renderBars(elId, data, color) {
-  const max = data.length ? Math.max(...data.map(d => d[1])) : 1;
-  const c = typeof color === 'function' ? color() : color;
-  document.getElementById(elId).innerHTML = data.map(([label, val]) =>
-    `<div class="bar-row">
-      <div class="bar-label" title="${label}">${label}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${val/max*100}%;background:${c}">${val}</div></div>
-    </div>`
-  ).join('');
+  const max = data.length ? Math.max(...data.map(d=>d[1])) : 1;
+  document.getElementById(elId).innerHTML = data.map(([l,v])=>`<div class="bar-row"><div class="bar-label" title="${l}">${l}</div><div class="bar-track"><div class="bar-fill" style="width:${v/max*100}%;background:${color}">${v}</div></div></div>`).join('');
 }
 
-// === KANBAN ===
+// ═══ KANBAN ═══
+function setKanbanMode(m, el) { kanbanMode = m; el.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderKanban(); }
+
 function renderKanban() {
-  const showCompleted = document.getElementById('kanban-toggle').checked;
   const search = document.getElementById('kanban-search').value.toLowerCase();
-  let items = DATA.items;
-  if (!showCompleted) items = items.filter(i => i.phase !== 'completed');
-  if (search) items = items.filter(i => i.product.toLowerCase().includes(search) || i.line.toLowerCase().includes(search));
-
-  const phases = showCompleted ? PHASE_ORDER : PHASE_ORDER.filter(p => p !== 'completed');
-  const board = document.getElementById('kanban-board');
-
-  board.innerHTML = phases.map(phase => {
-    const phaseItems = items.filter(i => i.phase === phase);
-    return `<div class="kanban-col">
-      <div class="kanban-header">${PHASE_LABELS[phase]} <span class="kanban-count">${phaseItems.length}</span></div>
-      ${phaseItems.map(i => `
-        <div class="kanban-card">
-          <div class="kc-line">${i.line}</div>
-          <div class="kc-name">${i.product}</div>
-          <div class="kc-meta">
-            <span>${i.type}</span>
-            <span>${i.bm}</span>
-          </div>
-          <div class="kc-meta">
-            <span>${i.channel}</span>
-            <span>${i.launch_target}</span>
-          </div>
-          <div class="kc-progress"><div class="kc-progress-bar" style="width:${i.progress}%;background:${PHASE_COLORS[phase]}"></div></div>
-        </div>
-      `).join('')}
-    </div>`;
+  let items = kanbanMode === 'active' ? DATA.items.filter(i=>i.phase!=='completed') : DATA.items;
+  if (search) items = items.filter(i=>i.product.toLowerCase().includes(search)||i.line.toLowerCase().includes(search)||i.bm.toLowerCase().includes(search));
+  const phases = kanbanMode === 'active' ? PHASE_ORDER.filter(p=>p!=='completed') : PHASE_ORDER;
+  document.getElementById('kanban-board').innerHTML = phases.map(phase=>{
+    const pi = items.filter(i=>i.phase===phase);
+    return `<div class="kanban-col"><div class="kanban-header">${PHASE_LABELS[phase]} <span class="kanban-count">${pi.length}</span></div>${pi.map(i=>`<div class="kanban-card" onclick='openModal(${i.no},"${i.product.replace(/'/g,"\\&#39;")}")'><div class="kc-line">${i.line}</div><div class="kc-name">${i.product}</div><div class="kc-meta"><span class="badge b-${i.type==='신제품'?'new':'renewal'}" style="font-size:10px;padding:1px 6px">${i.type}</span><span>${i.bm}</span></div><div class="kc-meta"><span>${i.channel}</span><span>${i.launch_target}</span></div><div class="kc-progress"><div class="kc-progress-bar" style="width:${i.progress}%;background:${PHASE_COLORS[phase]}"></div></div></div>`).join('')}</div>`;
   }).join('');
 }
 
-// === TABLE ===
-function buildFilters() {
-  const types = [...new Set(DATA.items.map(i => i.type))].sort();
-  const lines = [...new Set(DATA.items.map(i => i.line))].sort();
-  const channels = [...new Set(DATA.items.map(i => i.channel))].sort();
+// ═══ TIMELINE ═══
+function setTlMode(m,el){tlMode=m;el.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderTimeline();}
 
+function renderTimeline() {
+  let items = tlMode === 'active' ? DATA.items.filter(i=>i.phase!=='completed') : DATA.items;
+  const months = ['24.10','24.11','24.12','25.1','25.2','25.3','25.4','25.5','25.6'];
+  const monthMap = {'10월':0,'11월':1,'12월':2,'12월 목표':2,'25년':3,'25년 1월':3,'25년 2월':4,'25년 3월':5,'25년 4월':6,'25년 5월':7,'25년 6월':8};
+
+  let html = `<div class="tl-month-header"><div class="tl-label" style="font-weight:600">제품</div><div class="tl-track" style="display:flex">`;
+  months.forEach(m => html += `<div class="tl-month-cell">${m}</div>`);
+  html += `</div></div>`;
+
+  items.forEach(i => {
+    const idx = monthMap[i.launch_target];
+    const pos = idx !== undefined ? idx : 3;
+    const left = (pos / months.length * 100);
+    const width = Math.max(100/months.length - 1, 8);
+    html += `<div class="tl-row"><div class="tl-label" title="${i.product}"><span style="color:var(--accent);font-weight:600">${i.line}</span> ${i.product.length>25?i.product.substring(0,25)+'...':i.product}</div><div class="tl-track"><div class="tl-bar" style="left:${left}%;width:${width}%;background:${PHASE_COLORS[i.phase]}" onclick='openModal(${i.no},"${i.product.replace(/'/g,"\\&#39;")}")' data-tooltip="${i.stage} | ${i.bm} | ${i.launch_target}">${i.stage}</div></div></div>`;
+  });
+
+  document.getElementById('timeline-card').innerHTML = html;
+}
+
+// ═══ TABLE ═══
+function setTableMode(m,el){tableMode=m;el.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderTable();}
+
+function buildFilters() {
+  const types = [...new Set(DATA.items.map(i=>i.type))].sort();
+  const lines = [...new Set(DATA.items.map(i=>i.line))].sort();
+  const channels = [...new Set(DATA.items.map(i=>i.channel))].sort();
   const bar = document.getElementById('filter-bar');
   bar.innerHTML = '';
-
-  const addGroup = (key, values) => {
-    const btn = (val, label) => {
-      const b = document.createElement('div');
-      b.className = 'filter-btn' + (activeFilters[key] === val ? ' active' : '');
-      b.textContent = label;
-      b.onclick = () => { activeFilters[key] = val; buildFilters(); renderTable(); };
-      bar.appendChild(b);
-    };
-    btn('all', 'All');
-    values.forEach(v => btn(v, v));
-    const sep = document.createElement('span');
-    sep.className = 'filter-sep';
-    sep.textContent = '|';
-    bar.appendChild(sep);
+  const addGroup = (key, values, label) => {
+    const lbl = document.createElement('span');
+    lbl.style.cssText = 'font-size:11px;color:var(--muted);margin-right:2px;';
+    lbl.textContent = label;
+    bar.appendChild(lbl);
+    const btn = (val, text) => { const b = document.createElement('div'); b.className='filter-btn'+(activeFilters[key]===val?' active':''); b.textContent=text; b.onclick=()=>{activeFilters[key]=val;buildFilters();renderTable();}; bar.appendChild(b); };
+    btn('all','All');
+    values.forEach(v=>btn(v,v));
+    const sep = document.createElement('span'); sep.className='filter-sep'; sep.textContent='|'; bar.appendChild(sep);
   };
-
-  addGroup('type', types);
-  addGroup('line', lines);
+  addGroup('type',types,'구분');
+  addGroup('line',lines,'라인');
+  addGroup('channel',channels,'채널');
 }
 
 function renderTable() {
-  const showCompleted = document.getElementById('table-toggle').checked;
   const search = document.getElementById('table-search').value.toLowerCase();
-  let items = getFiltered(showCompleted);
-  if (search) items = items.filter(i =>
-    i.product.toLowerCase().includes(search) ||
-    i.line.toLowerCase().includes(search) ||
-    i.bm.toLowerCase().includes(search) ||
-    i.channel.toLowerCase().includes(search)
-  );
+  let items = getFiltered(tableMode);
+  if(search) items = items.filter(i=>i.product.toLowerCase().includes(search)||i.line.toLowerCase().includes(search)||i.bm.toLowerCase().includes(search)||i.channel.toLowerCase().includes(search));
+  items.sort((a,b)=>PHASE_ORDER.indexOf(a.phase)-PHASE_ORDER.indexOf(b.phase));
 
-  // Sort: in-progress first (by phase order), then completed
-  items.sort((a, b) => {
-    const ai = PHASE_ORDER.indexOf(a.phase);
-    const bi = PHASE_ORDER.indexOf(b.phase);
-    return ai - bi;
-  });
-
-  const wrap = document.getElementById('table-wrap');
-  wrap.innerHTML = `<table>
+  document.getElementById('table-wrap').innerHTML = `<table>
     <thead><tr>
       <th>No</th><th>구분</th><th>라인</th><th>제품명</th><th>채널</th>
-      <th>출시목표</th><th>담당(BM)</th><th>단계</th><th>진척률</th><th>다음 마일스톤</th><th>비고</th>
+      <th>출시목표</th><th>담당</th><th>단계</th><th style="min-width:120px">진척률</th><th>다음 마일스톤</th><th>비고</th>
     </tr></thead>
-    <tbody>
-    ${items.map(i => `<tr>
+    <tbody>${items.map(i=>`<tr style="cursor:pointer" onclick='openModal(${i.no},"${i.product.replace(/'/g,"\\&#39;")}","${i.phase}")'>
       <td>${i.no}</td>
-      <td><span class="badge b-${i.type === '신제품' ? 'planning' : 'production'}">${i.type}</span></td>
+      <td><span class="badge b-${i.type==='신제품'?'new':'renewal'}">${i.type}</span></td>
       <td style="font-weight:500">${i.line}</td>
-      <td title="${i.product}">${i.product.length > 40 ? i.product.substring(0,40)+'...' : i.product}</td>
+      <td title="${i.product}" style="max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.product}</td>
       <td>${i.channel}</td>
       <td>${i.launch_target}</td>
       <td>${i.bm}</td>
       <td><span class="badge b-${i.phase}">${i.stage}</span></td>
-      <td>
-        <div class="prog-bar">
-          <div class="prog-track"><div class="prog-fill" style="width:${i.progress}%;background:${PHASE_COLORS[i.phase]}"></div></div>
-          <div class="prog-text">${i.progress}%</div>
-        </div>
-      </td>
-      <td style="font-size:11px;color:var(--muted)">${i.next_milestone !== '-' ? i.next_milestone : ''}</td>
-      <td style="font-size:11px;color:var(--muted);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${i.note}">${i.note}</td>
-    </tr>`).join('')}
-    </tbody>
-  </table>`;
+      <td><div class="prog-bar"><div class="prog-track"><div class="prog-fill" style="width:${i.progress}%;background:${PHASE_COLORS[i.phase]}"></div></div><div class="prog-text">${i.progress}%</div></div></td>
+      <td style="font-size:12px;color:var(--muted)">${i.next_milestone!=='-'?i.next_milestone:''}</td>
+      <td style="font-size:12px;color:var(--muted);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${i.note}">${i.note}</td>
+    </tr>`).join('')}</tbody></table>`;
 }
+
+// ═══ MODAL ═══
+function openModal(no, productName) {
+  const item = DATA.items.find(i => i.no === no && i.product.startsWith(productName.substring(0,20)));
+  if (!item) return;
+  const m = document.getElementById('modal-content');
+  m.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-line">${item.line}</div>
+    <h2>${item.product}</h2>
+    <div class="modal-grid" style="margin-top:16px">
+      <div class="modal-field"><div class="modal-field-label">구분</div><div class="modal-field-val"><span class="badge b-${item.type==='신제품'?'new':'renewal'}">${item.type}</span></div></div>
+      <div class="modal-field"><div class="modal-field-label">현재 단계</div><div class="modal-field-val"><span class="badge b-${item.phase}">${item.stage}</span></div></div>
+      <div class="modal-field"><div class="modal-field-label">출시 목표</div><div class="modal-field-val">${item.launch_target}</div></div>
+      <div class="modal-field"><div class="modal-field-label">채널</div><div class="modal-field-val">${item.channel}</div></div>
+      <div class="modal-field"><div class="modal-field-label">담당(BM)</div><div class="modal-field-val">${item.bm}</div></div>
+      <div class="modal-field"><div class="modal-field-label">디자이너</div><div class="modal-field-val">${item.designer}</div></div>
+      ${item.manufacturer?`<div class="modal-field"><div class="modal-field-label">제조사</div><div class="modal-field-val">${item.manufacturer}</div></div>`:''}
+      ${item.functionality&&item.functionality!=='해당없음'?`<div class="modal-field"><div class="modal-field-label">기능성</div><div class="modal-field-val">${item.functionality}</div></div>`:''}
+      ${item.price?`<div class="modal-field"><div class="modal-field-label">소가</div><div class="modal-field-val">${Number(item.price).toLocaleString()}원</div></div>`:''}
+    </div>
+    <div style="margin:16px 0">
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px"><span>진척률</span><span style="font-weight:600;color:var(--text)">${item.progress}% (${item.completed_steps}/${item.total_steps})</span></div>
+      <div class="prog-track" style="height:8px"><div class="prog-fill" style="width:${item.progress}%;background:${PHASE_COLORS[item.phase]};height:100%"></div></div>
+    </div>
+    <div class="modal-steps">
+      <h3>Development Steps</h3>
+      ${STEP_ORDER.map((s,idx) => {
+        const done = idx < item.completed_steps;
+        const isCurrent = s === item.next_milestone.replace(/ /g,'_');
+        return `<div class="step-row"><div class="step-dot ${done?'done':'pending'}"></div><div class="step-name ${done?'done':isCurrent?'current':''}">${STEP_NAMES[s]||s}</div></div>`;
+      }).join('')}
+    </div>
+    ${item.note?`<div style="margin-top:16px;padding:12px;background:var(--surface2);border-radius:8px;font-size:13px;color:var(--muted)"><strong>비고:</strong> ${item.note}</div>`:''}
+  `;
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
 
 init();
 </script>
