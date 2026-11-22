@@ -413,6 +413,6 @@ pdf.highlight_box(
 
 
 # ═══ 저장 ═══
-output_path = 'C:/Users/user/Opera-Pipeline-Dashboard/Pipeline_Dashboard_논의자료.pdf'
+output_path = 'C:/Users/user/Desktop/지열/02_커리어/AI World/Opera-Pipeline-Dashboard/Pipeline_Dashboard_논의자료.pdf'
 pdf.output(output_path)
 print(f'PDF 생성 완료: {output_path}')
