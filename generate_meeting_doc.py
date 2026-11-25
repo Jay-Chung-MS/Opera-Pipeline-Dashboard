@@ -413,6 +413,7 @@ pdf.highlight_box(
 
 
 # ═══ 저장 ═══
-output_path = 'C:/Users/user/Desktop/지열/02_커리어/AI World/Opera-Pipeline-Dashboard/Pipeline_Dashboard_논의자료.pdf'
+import os
+output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Pipeline_Dashboard_논의자료.pdf')
 pdf.output(output_path)
 print(f'PDF 생성 완료: {output_path}')
